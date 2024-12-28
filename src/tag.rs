@@ -1153,4 +1153,13 @@ mod tests {
             .collect::<Vec<_>>();
         assert_eq!(&musician_credits, &new_musician_credits,);
     }
+
+    #[cfg(feature = "serde")]
+    #[test]
+    fn serde_id3v24() {
+        let tag = Tag::read_from_path("testdata/id3v24.id3").unwrap();
+        let found = serde_json::to_string_pretty(&tag).unwrap();
+        let expected = include_str!("../testdata/id3v24.json");
+        assert_eq!(expected, found);
+    }
 }
