@@ -1,3 +1,6 @@
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
 use crate::chunk;
 use crate::frame::{
     Chapter, Comment, EncapsulatedObject, ExtendedLink, ExtendedText, Frame, InvolvedPeopleList,
@@ -16,6 +19,7 @@ use std::iter::{FromIterator, Iterator};
 use std::path::Path;
 
 /// Denotes the version of a tag.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Copy, Clone, Default, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub enum Version {
     /// ID3v2.2
@@ -56,6 +60,7 @@ impl fmt::Display for Version {
 }
 
 /// An ID3 tag containing zero or more [`Frame`]s.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Default, Eq)]
 pub struct Tag {
     /// A vector of frames included in the tag.

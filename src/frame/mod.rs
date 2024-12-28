@@ -1,3 +1,6 @@
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
 use crate::error::{Error, ErrorKind};
 use crate::stream::encoding::Encoding;
 use crate::tag::Version;
@@ -16,6 +19,7 @@ mod content;
 mod content_cmp;
 mod timestamp;
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 enum ID {
     /// A valid 4-byte frame ID.
@@ -30,6 +34,7 @@ enum ID {
 /// The [`Content`] must be accompanied by a matching ID. Although this struct allows for invalid
 /// combinations to exist, attempting to encode them will yield an error.
 #[allow(clippy::derived_hash_with_manual_eq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, Ord, PartialOrd, Hash)]
 pub struct Frame {
     id: ID,

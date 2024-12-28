@@ -1,3 +1,6 @@
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
 use crate::frame::content_cmp::ContentCmp::{Comparable, Incomparable, Same};
 use crate::frame::Frame;
 use crate::stream::encoding::Encoding;
@@ -22,6 +25,7 @@ use std::io;
 /// In order to prevent breakage when this library adds a new frame type, users must use the
 /// [`Content::to_unknown`] method which will return an [`Unknown`] regardlesss of whether the
 /// frame content was successfully decoded.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[non_exhaustive]
 pub enum Content {
@@ -328,6 +332,7 @@ impl fmt::Display for Content {
 }
 
 /// The parsed contents of an extended text frame.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub struct ExtendedText {
@@ -352,6 +357,7 @@ impl From<ExtendedText> for Frame {
 }
 
 /// The parsed contents of an extended link frame.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub struct ExtendedLink {
@@ -378,6 +384,7 @@ impl From<ExtendedLink> for Frame {
 /// The parsed contents of an general encapsulated object frame.
 ///
 /// `EncapsulatedObject` stores its own encoding, rather than using the same encoding as rest of the tag, because some apps (ex. Serato) tend to write multiple GEOB tags with different encodings.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub struct EncapsulatedObject {
@@ -412,6 +419,7 @@ impl From<EncapsulatedObject> for Frame {
 }
 
 /// The parsed contents of a comment frame.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub struct Comment {
@@ -437,6 +445,7 @@ impl From<Comment> for Frame {
 }
 
 /// The parsed contents of a popularimeter frame.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Popularimeter {
     /// An identifier for the user which performed the rating. Typically an email address.
@@ -461,6 +470,7 @@ impl From<Popularimeter> for Frame {
 }
 
 /// The parsed contents of an unsynchronized lyrics frame.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub struct Lyrics {
@@ -486,6 +496,7 @@ impl From<Lyrics> for Frame {
 }
 
 /// The parsed contents of an synchronized lyrics frame.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub struct SynchronisedLyrics {
@@ -554,6 +565,7 @@ impl From<SynchronisedLyrics> for Frame {
     }
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub enum TimestampFormat {
@@ -572,6 +584,7 @@ impl fmt::Display for TimestampFormat {
     }
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub enum SynchronisedLyricsType {
@@ -606,6 +619,7 @@ impl fmt::Display for SynchronisedLyricsType {
 }
 
 /// Types of pictures used in APIC frames.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub enum PictureType {
@@ -692,6 +706,7 @@ impl fmt::Display for PictureType {
 }
 
 /// A structure representing an ID3 picture frame's contents.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Picture {
     /// The picture's MIME type.
@@ -727,6 +742,7 @@ impl From<Picture> for Frame {
     }
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub struct Chapter {
@@ -778,6 +794,7 @@ impl From<Chapter> for Frame {
     }
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub struct MpegLocationLookupTable {
@@ -797,6 +814,7 @@ pub struct MpegLocationLookupTable {
     pub references: Vec<MpegLocationLookupTableReference>,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub struct MpegLocationLookupTableReference {
@@ -817,6 +835,7 @@ impl From<MpegLocationLookupTable> for Frame {
 }
 
 /// The parsed contents of a private frame.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Private {
     /// Owner identifier
@@ -838,6 +857,7 @@ impl From<Private> for Frame {
 }
 
 /// The parsed contents of a UFID frame.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct UniqueFileIdentifier {
     /// Owner identifier
@@ -865,6 +885,7 @@ impl From<UniqueFileIdentifier> for Frame {
 }
 
 /// The parsed contents of an `IPLS` (ID3v2.3) or `TIPL`/`TMCL` (ID3v2.4) frame.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct InvolvedPeopleList {
     /// Items in the People List.
@@ -872,6 +893,7 @@ pub struct InvolvedPeopleList {
 }
 
 /// A entry inside the list in an `IPLS` (ID3v2.3) or `TIPL`/`TMCL` (ID3v2.4) frame.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct InvolvedPeopleListItem {
     /// Role of the involved person.
@@ -901,6 +923,7 @@ impl From<InvolvedPeopleList> for Frame {
     }
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[allow(missing_docs)]
 pub struct TableOfContents {
@@ -948,6 +971,7 @@ impl From<TableOfContents> for Frame {
 }
 
 /// The contents of a frame for which no decoder is currently implemented.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Unknown {
     /// The binary contents of the frame, excluding the frame header. No compression or

@@ -1,3 +1,6 @@
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
 use crate::{Error, ErrorKind, StorageFile};
 use std::cmp;
 use std::fs;
@@ -162,6 +165,7 @@ pub(crate) static GENRE_LIST: &[&str] = &[
 ];
 
 /// A structure containing ID3v1 metadata.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct Tag {
     /// The full title (ID3v1 + extension if present).

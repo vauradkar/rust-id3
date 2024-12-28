@@ -1,7 +1,11 @@
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
 use crate::{Error, ErrorKind};
 use std::convert::TryInto;
 
 /// Types of text encodings used in ID3 frames.
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Encoding {
     /// ISO-8859-1 text encoding, also referred to as latin1 encoding.

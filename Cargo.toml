@@ -17,6 +17,7 @@ include = ["src/*", "Cargo.toml", "LICENSE", "README.md"]
 bitflags = "2.0"
 byteorder = "1.4"
 flate2 = "1"
+serde = { version = "1.0.217", features = ["derive"], optional = true }
 tokio = { version = "1.21", default-features = false, features = ["rt", "macros", "io-util", "fs"], optional = true}
 
 [dev-dependencies]
@@ -30,3 +31,6 @@ tokio = ["dep:tokio"]
 
 ## Picture decoding takes ~20% of time. Allow disabling it if it's unneeded.
 decode_picture = []
+
+## Allow serializing and deserializing tags
+serde = ["dep:serde"]
